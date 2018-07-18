@@ -1,19 +1,19 @@
- #include<stdio.h>
- #include<conio.h>
- #include<stdlib.h>
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
 
- void input();
- void writefile();
- void search();
- void output();
+void writefile();
+void input();
+void output();
+void search();
 
- struct date{
+struct date{
 	   int month;
 	   int day;
 	   int year;
 	   };
 
-  struct account {
+struct account {
 	int number;
 	char name[100];
 	int acct_no;
@@ -27,18 +27,20 @@
 	struct date lastpayment;
   }customer;
   int tl,sl,ts;
+
+
+  
  void main()
 	{
 	  int i,n;
 	  char ch;
 	  clrscr();
-
+          textcolor(WHITE);
 	  _setcursortype(_NOCURSOR);
-	  printf("   CUSTOMER BILLING SYSTEM:\n\n");
-	  printf("===============================\n");
-	  printf("\n1:    to add account on list\n");
-	  printf("2:    to search customer account\n");
-	  printf("3:    exit\n");
+	  printf("Bill pay Management system\n\n");
+	  printf("1: Register Customer(s)\n");
+	  printf("2: Search for Customer\n");
+	  printf("3: Exit\n");
 	  printf("\n================================\n");
 	  do{
 	       printf("\nselect what do you want to do?");
@@ -47,7 +49,7 @@
 	  switch(ch){
 		case '1':
 			clrscr();
-			printf("\nhow many customer accounts?");
+			printf("\nHow many customer accounts need to be registered?");
 			scanf("%d",&n);
 			for(i=0;i<n;i++){
 				input();
@@ -61,9 +63,9 @@
 			main();
 		case '2':
 			clrscr();
-			printf("search by what?\n");
-			printf("\n1 --- search by customer number\n");
-			printf("2 --- search by customer name\n");
+			printf("Search By?\n");
+			printf("\n1>>Search by customer number\n");
+			printf("2>>Search by customer name\n");
 			search();
 			ch=getche();
 			main();
@@ -71,8 +73,8 @@
 			clrscr();
 			delay(700);
 			textcolor(RED);
-			gotoxy(25,25);
-			cprintf("\nA PROJECT BY Shohid");
+			gotoxy(10,10);
+			cprintf("\nThank you");
 			delay(1500);
 			exit(1);
 	  }
@@ -81,20 +83,20 @@
 
    void input()
 	{
-	  FILE *fp=fopen("bidur.dat","rb");
+	  FILE *fp=fopen("cust.dat","rb");
 	  fseek (fp,0,SEEK_END);
 	  tl=ftell(fp);
 	  sl=sizeof(customer);
 	  ts=tl/sl;
 	  fseek(fp,(ts-1)*sl,SEEK_SET);
 	  fread(&customer,sizeof(customer),1,fp);
-	  printf("\ncustomer no:%d\n",++customer.number);
+	  printf("\ncustomer Base ID:%d\n",++customer.number);
 	  fclose(fp);
 	  printf("         Account number:");
 	  scanf("%d",&customer.acct_no);
-	  printf("\n       Name:");
+	  printf("         Name:");
 	  scanf("%s",customer.name);
-	  printf("\n       mobile no:");
+	  printf("         Mobile no:");
 	  scanf("%f",&customer.mobile_no);
 	  printf("         Street:");
 	  scanf("%s",customer.street);
@@ -112,7 +114,7 @@
    void writefile()
    {
 	  FILE *fp;
-	  fp=fopen("bidur.dat","ab");
+	  fp=fopen("cust.dat","ab");
 	  fwrite(&customer,sizeof(customer),1,fp);
 	  fclose(fp);
 	  return;
@@ -124,9 +126,9 @@
 	 char nam[100];
 	 int n,i,m=1;
 	 FILE *fp;
-	 fp=fopen("bidur.dat","rb");
+	 fp=fopen("cust.dat","rb");
 	 do{
-		printf("\nenter your choice:");
+		printf("\nEnter your choice:");
 		ch=getche();
 	 }while(ch!='1' && ch!='2');
 	 switch(ch){
@@ -136,7 +138,7 @@
 		    sl=sizeof(customer);
 		    ts=tl/sl;
 		    do{
-			printf("\nchoose customer number:");
+			printf("\nDesired customer number:");
 			scanf("%d",&n);
 			if(n<=0 || n>ts)
 			printf("\nenter correct\n");
@@ -145,7 +147,7 @@
 			    fread(&customer,sl,1,fp);
 			    output();
 			}
-			printf("\n\nagain?(y/n)");
+			printf("\n\nSearch Again?(y/n)");
 			ch=getche();
 		    }while(ch=='y');
 		    fclose(fp);
@@ -160,7 +162,7 @@
 		    n=customer.number;
 
 		    do{
-			printf("\nenter the name:");
+			printf("\nEnter Desired customers name:");
 			scanf("%s",nam);
 			fseek(fp,0,SEEK_SET);
 			for(i=1;i<=n;i++)
@@ -174,8 +176,8 @@
 			     }
 			}
 			if(m!=0)
-			printf("\n\ndoesn't exist\n");
-			printf("\nanother?(y/n)");
+			printf("\n\nDoesn't exist\n");
+			printf("\nTry another?(y/n)");
 			ch=getche();
 		    }while(ch=='y');
 		    fclose(fp);
@@ -187,7 +189,7 @@
 
    void output()
 	 {
-	   printf("\n\n    Customer no    :%d\n",customer.number);
+	   printf("\n\n    Customer ID    :%d\n",customer.number);
 	   printf("    Name 	   :%s\n",customer.name);
 	   printf("    Mobile no      :%.f\n",customer.mobile_no);
 	   printf("    Account number :%d\n",customer.acct_no);
@@ -216,17 +218,3 @@
 	      textcolor(WHITE);
 	      return;
 	   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
